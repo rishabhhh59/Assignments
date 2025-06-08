@@ -1,10 +1,10 @@
-# Linux and Git Assignment
+# Linux and Git Assignment:
 
 This repository contains solutions for a Linux and Git assignment, covering file permissions, user management, basic terminal commands, and Git version control operations.
 
 ---
 
-## 📁 Folder Structure
+## 📁 Folder Structure:-
 
 ### `/linux`
 - `permissions.sh`: Create files and assign different permissions using `chmod`.
@@ -21,7 +21,7 @@ This repository contains solutions for a Linux and Git assignment, covering file
 
 ---
 
-## 📚 Topics Covered
+## 📚 Topics Covered:
 
 - Linux file permissions (`chmod`, `chown`)
 - User and group management (`useradd`, `usermod`, `userdel`)
@@ -32,7 +32,18 @@ This repository contains solutions for a Linux and Git assignment, covering file
 
 ---
 
-## 🔧 How to Use
+## 🔧 How to Use:-
+
+# Clone the repository:
+
+```bash
+git clone https://github.com/rishabhhh59/Assignments.git
+cd Assignments
+
+Navigate to scripts:
+
+cd linux       # for Linux tasks
+cd ../git      # for Git tasks
 
 ```bash
 # Make scripts executable
