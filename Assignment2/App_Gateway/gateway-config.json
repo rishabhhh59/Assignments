@@ -1,0 +1,15 @@
+{
+  "name": "myAppGateway",
+  "sku": {
+    "name": "Standard_v2",
+    "tier": "Standard_v2"
+  },
+  "gatewayIPConfigurations": [{
+    "name": "appGatewayIpConfig"
+  }],
+  "frontendPorts": [{
+    "name": "appGatewayFrontendPort",
+    "port": 80
+  }]
+}
+
