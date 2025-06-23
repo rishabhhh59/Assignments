@@ -1,0 +1,1 @@
+Solution for task: 01 Observe Subscriptions EntraID

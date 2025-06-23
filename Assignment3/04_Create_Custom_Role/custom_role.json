@@ -1,0 +1,8 @@
+{
+  "Name": "CustomReaderRole",
+  "IsCustom": true,
+  "Description": "Can read resources but not modify",
+  "Actions": [ "Microsoft.Resources/subscriptions/resourceGroups/read" ],
+  "NotActions": [],
+  "AssignableScopes": [ "/subscriptions/<your-subscription-id>" ]
+}

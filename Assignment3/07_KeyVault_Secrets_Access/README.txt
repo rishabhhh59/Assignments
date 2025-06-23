@@ -1,0 +1,1 @@
+Solution for task: 07 KeyVault Secrets Access

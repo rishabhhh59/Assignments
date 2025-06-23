@@ -1,0 +1,1 @@
+az role assignment create --assignee testuser1@example.com --role 'Reader' --scope /subscriptions/<your-subscription-id>

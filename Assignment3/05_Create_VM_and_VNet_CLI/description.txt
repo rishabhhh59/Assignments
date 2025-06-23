@@ -1,0 +1,1 @@
+Create a Virtual Machine and VNet using Azure CLI.

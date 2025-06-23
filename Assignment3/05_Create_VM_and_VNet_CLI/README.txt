@@ -1,0 +1,1 @@
+Solution for task: 05 Create VM and VNet CLI

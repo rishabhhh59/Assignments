@@ -1,0 +1,1 @@
+Create test users and groups in Azure Entra ID.

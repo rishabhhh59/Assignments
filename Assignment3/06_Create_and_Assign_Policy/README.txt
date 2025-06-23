@@ -1,0 +1,1 @@
+Solution for task: 06 Create and Assign Policy

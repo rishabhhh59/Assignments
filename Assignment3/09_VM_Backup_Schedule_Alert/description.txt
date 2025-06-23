@@ -1,0 +1,1 @@
+Schedule daily backup and configure CPU alert rule.

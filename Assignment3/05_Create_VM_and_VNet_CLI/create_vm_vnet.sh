@@ -1,0 +1,2 @@
+az network vnet create --name myVNet --resource-group myResourceGroup --subnet-name mySubnet
+az vm create --resource-group myResourceGroup --name myVM --vnet-name myVNet --subnet mySubnet --image UbuntuLTS --admin-username azureuser --generate-ssh-keys

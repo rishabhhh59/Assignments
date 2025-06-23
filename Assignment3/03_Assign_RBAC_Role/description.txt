@@ -1,0 +1,1 @@
+Assign Reader RBAC role to a test user.

@@ -1,0 +1,18 @@
+{
+  "properties": {
+    "displayName": "Enforce tag on resources",
+    "policyType": "Custom",
+    "mode": "All",
+    "metadata": { "version": "1.0.0" },
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "field": "tags",
+        "exists": "false"
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}
