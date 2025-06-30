@@ -1,0 +1,3 @@
+- Use non-root users in containers
+- Use minimal base images
+- Regularly scan images for vulnerabilities
