@@ -1,0 +1,14 @@
+1. Login to Azure Portal and search for "Kubernetes Services"
+2. Click "Create" and configure:
+   - Resource group
+   - Cluster name
+   - Region, size, authentication
+3. After creation, run:
+   az login
+   az aks get-credentials --resource-group <group> --name <aks-name>
+4. Access dashboard:
+   kubectl proxy
+   http://localhost:8001/api/v1/namespaces/kube-system/services/kubernetes-dashboard:/proxy/
+5. Create role:
+   kubectl create role dev-reader --verb=get,list --resource=pods --namespace=default
+   kubectl create rolebinding dev-binding --role=dev-reader --user=<user> --namespace=default
