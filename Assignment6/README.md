@@ -31,9 +31,6 @@ This repository contains solutions for a Kubernetes and AKS assignment, covering
 `script.sh`: Configure Horizontal Pod Autoscaler (HPA)  
 `README.md`: Automatic scaling of workloads and clusters
 
-### /_screenshots
-Placeholder for documentation screenshots
-
 ## 📚 Topics Covered:
 - Kubernetes workload controllers (Deployments, ReplicaSets, ReplicationControllers)
 - Service types (ClusterIP, NodePort, LoadBalancer)
