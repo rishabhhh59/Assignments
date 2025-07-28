@@ -1,0 +1,47 @@
+trigger:
+- main
+
+resources:
+- repo: self
+
+variables:
+  imageRepository: 'myapp'
+  dockerfilePath: '**/Dockerfile'
+  tag: '$(Build.BuildId)'
+  azureSubscription: 'my-azure-sub'
+  acrName: 'myacr.azurecr.io'
+
+stages:
+- stage: Build
+  jobs:
+  - job: Build
+    steps:
+    - task: Docker@2
+      inputs:
+        command: build
+        repository: $(imageRepository)
+        dockerfile: $(dockerfilePath)
+        tags: $(tag)
+    
+    - task: Docker@2
+      inputs:
+        command: push
+        repository: $(imageRepository)
+        containerRegistry: $(azureSubscription)
+
+- stage: Deploy
+  dependsOn: Build
+  jobs:
+  - deployment: DeployAKS
+    environment: 'prod-aks'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: KubernetesManifest@0
+            inputs:
+              action: 'deploy'
+              namespace: 'default'
+              manifests: 'manifests/deployment.yml'
+              imagePullSecrets: 'acr-auth'
+              containers: '$(acrName)/$(imageRepository):$(tag)'

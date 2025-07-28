@@ -1,0 +1,55 @@
+trigger:
+- main
+
+variables:
+  vmResourceGroup: 'my-vm-rg'
+  vmName: 'my-react-vm'
+  artifactName: 'react-app'
+
+stages:
+- stage: Build
+  jobs:
+  - job: Build
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '16.x'
+    
+    - script: |
+        npm install
+        npm run build
+      displayName: 'npm install and build'
+    
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: 'build'
+        artifact: $(artifactName)
+
+- stage: Deploy
+  dependsOn: Build
+  jobs:
+  - deployment: DeployVM
+    environment: 'prod-vm'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: DownloadPipelineArtifact@2
+            inputs:
+              artifact: $(artifactName)
+              path: '$(Pipeline.Workspace)/build'
+          
+          - task: AzureCLI@2
+            inputs:
+              azureSubscription: $(azureSubscription)
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                az vm run-command invoke \
+                  --resource-group $(vmResourceGroup) \
+                  --name $(vmName) \
+                  --command-id RunShellScript \
+                  --scripts @deploy-script.sh \
+                  --parameters buildPath=$(Pipeline.Workspace)/build

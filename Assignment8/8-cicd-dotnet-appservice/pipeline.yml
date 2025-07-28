@@ -1,0 +1,53 @@
+trigger:
+- main
+
+variables:
+  buildConfiguration: 'Release'
+  azureSubscription: 'my-azure-sub'
+  webAppName: 'my-dotnet-app'
+
+stages:
+- stage: Build
+  jobs:
+  - job: Build
+    pool:
+      vmImage: 'windows-latest'
+    steps:
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'build'
+        projects: '**/*.csproj'
+        arguments: '--configuration $(buildConfiguration)'
+    
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'publish'
+        publishWebProjects: true
+        arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+        zipAfterPublish: true
+    
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: '$(Build.ArtifactStagingDirectory)'
+        artifact: 'drop'
+
+- stage: Deploy
+  dependsOn: Build
+  jobs:
+  - deployment: DeployApp
+    environment: 'prod-appservice'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: DownloadPipelineArtifact@2
+            inputs:
+              artifact: 'drop'
+              path: '$(Pipeline.Workspace)/drop'
+          
+          - task: AzureWebApp@1
+            inputs:
+              azureSubscription: $(azureSubscription)
+              appType: 'webApp'
+              appName: $(webAppName)
+              package: '$(Pipeline.Workspace)/drop/**/*.zip'

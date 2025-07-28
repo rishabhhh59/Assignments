@@ -1,0 +1,50 @@
+trigger:
+- main
+
+variables:
+  acrName: 'myacr.azurecr.io'
+  imageName: 'myapp'
+  tag: '$(Build.BuildId)'
+
+stages:
+- stage: Build
+  jobs:
+  - job: BuildImage
+    steps:
+    - task: Docker@2
+      inputs:
+        command: build
+        dockerfile: '**/Dockerfile'
+        repository: $(imageName)
+        tags: $(tag)
+    
+    - task: Docker@2
+      inputs:
+        command: push
+        repository: $(imageName)
+        containerRegistry: 'my-acr-service-connection'
+
+- stage: Deploy
+  dependsOn: Build
+  jobs:
+  - deployment: DeployACI
+    environment: 'prod-aci'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureCLI@2
+            inputs:
+              azureSubscription: 'my-azure-sub'
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                az container create \
+                  --resource-group my-rg \
+                  --name myapp-container \
+                  --image $(acrName)/$(imageName):$(tag) \
+                  --ports 80 \
+                  --dns-name-label myapp-$(tag) \
+                  --registry-login-server $(acrName) \
+                  --registry-username $(ACR_USERNAME) \
+                  --registry-password $(ACR_PASSWORD)
